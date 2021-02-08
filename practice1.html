@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>vue.js学習1</title>
+		<link rel="stylesheet" type="text/css" ref="css/style.css" />
+		<script src="js/vue.js"></script>
+	</head>
+	<body>
+		<h2>クリック</h2>
+		<div id="app">
+			<p v-text="text"></p>
+			<p v-html="html"></p>
+			<a v-bind:href="url">Yahoo</a>
+			<a v-bind:[attribute]="url">Yahoo</a>
+			<a v-bind="twitterObject">Twitter</a>
+			<button v-on:click="countUp">カウント</button>
+			<button v-on:[event]="countUp">カウント</button>
+			<button @click="countUp">カウント</button>
+			<p v-on:mousemove="changeMousePosition">マウスを載せる
+				<span v-on:mousemove.stop>反応しない</span>
+			</p>
+			<a v-on:click.prevent.stop="noEvent" href="https://google.com">Google</a>
+			<input type="text" v-on:keyup.enter="myAlert">
+			<p>X:{{x}},Y:{{y}}</p>
+			<p>{{mynumber.first}}</p>
+			<p>{{myarray[1]}}</p>
+			<p>{{count}}回</p>
+		</div>
+		<script>
+			new Vue({
+				el:"#app",
+				data:{
+					text:'あああ',
+					html:'<span>HTMLを挿入</span>',
+					url:'https://yahoo.co.jp',
+					attribute:'href',
+					twitterObject:{id:1,href:'http://twitter.com'},
+					count:0,
+					x:0,
+					y:0,
+					mynumber:{first:6,second:2},
+					myarray:['a','b','c'],
+					event:'click'
+				},
+				methods:{
+					countUp:function(){
+						this.count++;
+					},
+					changeMousePosition:function(e){
+						this.x = e.clientX,
+						this.y = e.clientY;
+					},
+					myAlert(){
+						alert('アラート');
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
