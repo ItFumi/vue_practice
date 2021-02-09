@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>vue.js学習51~64</title>
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<script src="js/vue.js"></script>
+	</head>
+	<body>
+		<div id="app1">
+			<p>{{message}}</p>
+			<button @click="message = 'ボタンから変更'">変更</button>
+			<aaa></aaa>
+		</div>
+		<div id="app2">
+			<p>{{message}}</p>
+			<button @click="changeMessage1">インスタンス1のmessageを変更</button>
+			<button @click="message = 'ボタンから変更'">変更</button>
+		</div>
+		<div id="app3">
+			<p>{{myData}}</p>
+		</div>
+		<div id="app4"></div>
+		<div id="app5"></div>
+		<div id="app6">
+			<p>さようなら{{name}}さん</p>
+			<button @click="name = '太一'">名前変更</button>
+			<button @click="destroy">インスタンス破壊</button>
+		</div>
+		<script>
+			var data = {
+				firstname: '山田',
+				lastname: '太郎'
+			}
+			//複数のインスタンスで共通して使用したい事がある場合は、componentが必要。
+			Vue.component('aaa', {
+				template: '<p>ウクライナ</p>'
+			});
+			var vm1 = new Vue({
+				el:"#app1",
+				data: {
+					message: 'インスタンス1',
+					name: data
+				},
+				computed: {
+					myData: function (){
+						// 自分自身のインスタンスを取得
+						return this.$data;
+					}
+				}
+			})
+			console.log(vm1.$data)
+			// 外側から変更可能。ただし、プロパティの追加はできない。
+			vm1.message = '書き換え'
+			var vm2 = new Vue({
+				el:"#app2",
+				data: {
+					message: 'インスタンス2'
+				},
+				methods: {
+					changeMessage1: function() {
+						// 別のインスタンスのプロパティを変更。
+						vm1.message = 'インスタンス2から変えました'
+					}
+				}
+			})
+			var vm3 = new Vue({
+				data: data,
+				computed: {
+					myData: function (){
+						// 自分自身のインスタンスを取得
+						return this.$data;
+					}
+				}
+			})
+			// elの代わり
+			// $mountは作成した仮装DOMを実際のDOMに反映する。
+			vm3.$mount('#app3')
+
+			/*
+			new Vue({
+				el: 'app4'
+				data: {
+					name: '安藤'
+				},
+				template: '<p>こんにちは、{{name}}さん。</p>'
+			})
+			*/
+			//下記は上記と同意。
+			new Vue({
+				data: {
+					name: '安藤'
+				},
+				template: '<p>こんにちは、{{name}}さん。</p>'
+			}).$mount('#app4')
+			new Vue({
+				data: {
+					name: '伊藤'
+				},
+				render: function (h){
+					// 仮装ノード生成。ノード情報をVue本体に受け渡す。
+					// 仮装DOMとはDOM要素を模したJavaScriptのオブジェクトの事。
+					return h('h1', 'こんにちは'+this.name);
+				}
+			}).$mount('#app5')
+			new Vue({
+				el: '#app6',
+				data: {
+					name: '伊藤'
+				},
+				beforeCreate: function(){
+					console.log('beforeCreate');
+				},
+				created: function(){
+					console.log('created');
+				},
+				beforeMount: function(){
+					console.log('beforeMount');
+				},
+				mounted: function(){
+					console.log('Mounted');
+				},
+				beforeUpdate: function(){
+					console.log('beforeUpdate');
+				},
+				updated: function(){
+					console.log('updated');
+				},
+				beforeDestroy: function(){
+					console.log('beforeDestroy');
+				},
+				destroyed: function(){
+					console.log('destroyed');
+				},
+				methods: {
+					destroy: function() {
+						// Vueインスタンスの機能を破壊する。これ以降にクリック動作等は効かない。
+						this.$destroy()
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
