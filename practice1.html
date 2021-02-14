@@ -7,25 +7,52 @@
 		<script src="js/vue.js"></script>
 	</head>
 	<body>
-		<h2>クリック</h2>
 		<div id="app">
+			<!-- 下記のdataのtextから、「あああ」が表示される。 -->
 			<p v-text="text"></p>
+			<!-- 下記のdataのhtmlから、spanタグで囲われたテキスト「HTMLを挿入」が表示される。 -->
 			<p v-html="html"></p>
-			<a v-bind:href="url">Yahoo</a>
-			<a v-bind:[attribute]="url">Yahoo</a>
-			<a v-bind="twitterObject">Twitter</a>
-			<button v-on:click="countUp">カウント</button>
-			<button v-on:[event]="countUp">カウント</button>
-			<button @click="countUp">カウント</button>
-			<p v-on:mousemove="changeMousePosition">マウスを載せる
-				<span v-on:mousemove.stop>反応しない</span>
+
+			<div class="section">
+				<!-- 1. 下記のdataのurlで指定したページに遷移する。 -->
+				<a v-bind:href="url">Yahoo</a>
+				<!-- 2. [attribute]に、下記のdataのattributeのhrefが挿入され、上記の1.と同じ処理をする。 -->
+				<a v-bind:[attribute]="url">Yahoo</a>
+				<p>
+					<!-- 下記のdataのtwitterObjectから、idが1でhrefがhttp://twitter.comのaタグとなる。 -->
+					<a v-bind="twitterObject">Twitter</a>
+				</p>
+			</div>
+			<div class="section">
+				<p>{{count}}回</p>
+				<!-- 1. 下記のmethodsのcountUp関数を実行する。 -->
+				<button v-on:click="countUp">カウント</button>
+				<!-- 2. [event]に、下記のdataのeventのclickが挿入され、上記の1.と同じ処理をする。 -->
+				<button v-on:[event]="countUp">カウント</button>
+				<p>
+					<!-- 省略形。「v-on:」を「@」に置き換え。 -->
+					<button @click="countUp">カウント</button>
+				</p>
+			</div>
+			<div class="section">
+				<p>X:{{x}},Y:{{y}}</p>
+				<div class="mouse_area">
+					<!-- マウスを動かしている間、下記のmethodsのchangeMousePosition関数を実行する。 -->
+					<div class="move_area" @mousemove="changeMousePosition">XとYの値が変化</div>
+					<!-- mousemoveイベントを実行させない。 -->
+					<div class="stop_area" @mousemove.stop>XとYの値が変化しない</div>
+				</div>
+			</div>
+			<p>
+				<!-- .prevent.stopによってイベントイベントを実行せず、指定したページに遷移しない。 -->
+				<a @click.prevent.stop="noEvent" href="https://google.com">Google</a>
 			</p>
-			<a v-on:click.prevent.stop="noEvent" href="https://google.com">Google</a>
-			<input type="text" v-on:keyup.enter="myAlert">
-			<p>X:{{x}},Y:{{y}}</p>
+			<!-- キーを離した時点で、下記のmethodsのmyAlert関数を実行する。 -->
+			<input type="text" @keyup.enter="myAlert">
+			<!-- 下記のdataのオブジェクトからデータを取得する。 -->
 			<p>{{mynumber.first}}</p>
+			<!-- 下記のdataの配列からデータを取得する。 -->
 			<p>{{myarray[1]}}</p>
-			<p>{{count}}回</p>
 		</div>
 		<script>
 			new Vue({
@@ -37,11 +64,11 @@
 					attribute:'href',
 					twitterObject:{id:1,href:'http://twitter.com'},
 					count:0,
+					event:'click',
 					x:0,
 					y:0,
 					mynumber:{first:6,second:2},
-					myarray:['a','b','c'],
-					event:'click'
+					myarray:['a','b','c']
 				},
 				methods:{
 					countUp:function(){
@@ -57,5 +84,21 @@
 				}
 			})
 		</script>
+		<style>
+		.section {
+			border: 1px solid #000;
+		}
+		.mouse_area {
+			height: 100px;
+		}
+		.move_area {
+			background-color: #0cf;
+			height: 50%;
+		}
+		.stop_area {
+			background-color: #fc0;
+			height: 50%;
+		}
+		</style>
 	</body>
 </html>
