@@ -1,4 +1,4 @@
-//templateタグの中身は同階層のタグがあってはいけない。
+<!-- templateタグの中身は同階層のタグが複数あってはいけない。 -->
 <template>
 	<div>
 		<div>いいね({{totalNumber/2}})</div>
@@ -8,11 +8,12 @@
 </template>
 <script>
 export default {
-	//下記は「props: ["totalNumber","testProps"],」といった配列でも記載可能
+	// 下記は「props: ["totalNumber","testProps"],」といった配列でも記載可能。
 	props: {
 		totalNumber: {
-			totalNumber: Number, //「type: Number」でも可能
-			//「required: true」で入力必須かどうか
+			//「type: Number」でも記載可能。
+			totalNumber: Number,
+			//「required: true」で入力必須かどうか。
 			//「default: 10」で何も入力されなかった場合の値。requiredとは一緒に記載できない。
 			/* オブジェクト型の場合
 			default: function() {
@@ -43,4 +44,4 @@ export default {
 div {
 	border: 1px solid blue;
 }
-</style> 
+</style>
