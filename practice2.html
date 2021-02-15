@@ -8,49 +8,94 @@
 	</head>
 	<body>
 		<div id="app">
-			<input type="text" v-model="message">
-			<h1>{{message}}</h1>
-			<p>{{counter}}</p>
-			<button @click="counter+=1">-1</button>
-			<p>{{counter > 3 ? '3より上' : '3以下'}}</p>
-			<p>{{ lessThanThree }}</p>
-			<!-- 二重中括弧の中にメソッドを記載するとページが再描画される度に実行される。 -->
-			<p>{{ lessThanThreeMethod() }}</p> 
-			<h1 :class="{red:true,blue:false}">色変更</h1>
-			<h1 :class="{red:!isActive,blue:isActive}">色変更</h1>
-			<button @click="isActive = !isActive">色切り替え</button>
+			<div class="section">
+				<!-- 下記のdataのmessageから、テキストフィールドに「こんにちは」が表示される。 -->
+				<!-- テキストフィールドの値を変更すると、下記のdataのmessageの値も変更される。 -->
+				<input type="text" v-model="message">
+				<h2>{{message}}</h2>
+			</div>
+			<div class="section">
+				<p>computed : {{counter}}　　methods : {{otherCounter}}</p>
+				<p></p>
+				<!-- 下記のdataのcounterの値を-1する。それに伴いwatchのcounter関数も実行される。 -->
+				<p>computed : <button @click="counter-=1">-1</button>　methods : <button @click="otherCounter-=1">-1</button></p>
+				<p>
+					<!-- 1. counterの値が20以下となった際、trueである'20より上'からfalseの'20以下'となる。 -->
+					<span>{{counter>2?'2より上':'2以下'}}</span>
+					<!-- 2. 下記のcomputedのlessThanThree関数を実行する。上記の1.と同じ処理をする。 -->
+					<span>　computed : {{lessThanThreeComputed}}</span>
+					<!-- 3. 下記のmethodsのlessThanThreeMethod関数を実行する。上記の1.と同じ処理をする。 -->
+					<!-- 二重中括弧に関数を記載すると、ページが再描画される度に実行される。 -->
+					<span>　methods : {{lessThanThreeMethod()}}</span>
+				</p>
+			</div>
+			<div class="section">
+				<!-- 外部CSSのredクラスのスタイルを適用し、blueクラスを適用しない。 -->
+				<h1 :class="{red:true,blue:false}">色変更</h1>
+				<!-- 初期の段階ではredクラスを適用せず、blueクラスを適用する。下記のボタンでそれを切り替える。 -->
+				<h1 :class="{red:!isActive,blue:isActive}">色変更</h1>
+				<!-- クリックする度にisActiveをtrue/falseに切り替える。初期値はtrue。 -->
+				<button @click="isActive = !isActive">色切り替え</button>
+			</div>
+			<!-- 下記のdataのtextColorとbgColorの値を挿入して、h1タグにスタイルを適用する。 -->
 			<h1 :style="{color: textColor, 'background-color': bgColor}">色変更</h1>
 		</div>
 		<script>
 			new Vue({
 				el:"#app",
-				data:{ // dataには初期値およびプレーンな値を記載。動的な値は記載できない。
+				// dataには初期値およびプレーンな値を記載する。動的な値は記載できない。
+				data:{
 					message: 'こんにちは',
-					counter: 30,
+					counter: 5,
+					otherCounter: 5,
 					isActive: true,
 					textColor: 'red',
 					bgColor: 'blue'
 				},
+				// 動的な値はこちらに記載する。
 				computed:{
-					lessThanThree: function() { // 動的な値はこちらに記載。
-						// counterの値が変更された時のみ実行される
-						return this.counter > 3 ? '3より上' : '3以下'
+					// counterの値が変更された時のみ実行される。
+					lessThanThreeComputed:function(){
+						console.log('computed')
+						return this.counter > 2 ? '2より上' : '2以下'
 					}
 				},
 				methods:{
-					lessThanThreeMethod: function() {
-						return this.counter > 3 ? '3より上' : '3以下'
+					// ページが再描画される度に実行される。大規模な処理には不向き。
+					lessThanThreeMethod:function(){
+						console.log('methods')
+						return this.counter > 2 ? '2より上' : '2以下'
 					}
 				},
+				// 上記のcomputedではできない非同期の処理を記載する。
 				watch:{
-					counter: function() { //非同期の処理を記載。上記のcomputedではできない処理を記載。
+					counter:function(){
 						var vm = this;
-						setTimeout(function(){
-							vm.counter -= 1;
-						}, 1000)
+						if(this.counter > 0){
+							setTimeout(function(){
+								vm.counter -= 1;
+							}, 1000)
+						} else {
+							return false;
+						}
+					},
+					otherCounter:function(){
+						var vm = this;
+						if(this.otherCounter > 0){
+							setTimeout(function(){
+								vm.otherCounter -= 1;
+							}, 1000)
+						} else {
+							return false;
+						}
 					}
 				}
 			})
 		</script>
+		<style>
+		.section {
+			border: 1px solid #000;
+		}
+		</style>
 	</body>
 </html>
