@@ -2,61 +2,77 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>vue.js学習33~48</title>
+		<title>vue.js学習36~48</title>
 		<link rel="stylesheet" type="text/css" href="css/common.css" />
 		<script src="js/vue.js"></script>
 	</head>
 	<body>
 		<div id="app">
-			<p v-if="ok">OK!</p>
-			<p v-else-if="maybeOk">maybe OK!</p>
-			<p v-else>Not OK...</p> <!-- v-ifの直下に記載する事。 -->
-			<!-- 
-			<template>
-				<p v-if="ok_no">1</p>
-				<p v-if="ok_no">2</p>
-				<p v-if="ok_no">3</p>
-			</template>
-			-->
-			<!-- templateは上記のv-ifをまとめる役割を持つ。 -->
-			<template v-if="ok_no">
-				<p>1</p>
-				<p>2</p>
-				<p>3</p>
-			</template>
-			<p v-show="ok">Show</p> <!-- v-ifと違い、display:'none'の切替えで表示を制御。templateには適用できない。頻繁に何かの表示を制御する場合に使用。 -->
-			<button @click="ok_no = !ok_no">ボタン</button>
-			<ul>
-				<li v-for="(val,i) in fruits">{{i}}. {{val}}</li>
-			</ul>
-			<ul>
-				<li v-for="(val,k,i) in object">{{i}}. {{k}}: {{val}}</li>
-			</ul>
-			<ul>
-				<template v-for="val in fruits"> <!-- templateタグでまとめる事も可能。 -->
-					<li>{{val}}</li>
-					<hr>
+			<div class="section">
+				<!-- 下記のdataのokとmaybeOkから、maybeOkの値がtrueの為、「maybe OK!」が表示される。 -->
+				<!-- 下記のdataのokとmaybeOkが共にtrueの場合、先にtrueである「ok」が表示される。 -->
+				<p v-if="ok">ok</p>
+				<p v-else-if="maybeOk">maybe OK!</p>
+				<!-- 下記のdataのokとmaybeOkが共にfalseの場合、「Not OK...」が表示される。 -->
+				<p v-else>Not OK...</p>
+			</div>
+			<div class="section">
+				<!-- templateは上記のv-ifをまとめる役割を持つ。 -->
+				<template v-if="ok_no">
+					<p>1</p>
+					<p>2</p>
+					<p>3</p>
 				</template>
-			</ul>
-			<ul>
-				<li v-for="n in 10">{{n}}</li>
-			</ul>
-			<!-- 下記の場合、templateタグは属性を持たないのでdivタグで行う。 -->
-			<ul>
-				<div v-for="val in fruits" :key="val">
-					<li>{{val}}</li>
-					<input type="text">
-				</div>
-			</ul>
-			<button @click="remove">先頭を削除</button>
+				<!--
+				<template>
+					<p v-if="ok_no">1</p>
+					<p v-if="ok_no">2</p>
+					<p v-if="ok_no">3</p>
+				</template>
+				-->
+				<!-- クリックする度にok_noをtrue/falseに切り替える。初期値はtrue。 -->
+				<button @click="ok_no = !ok_no">ボタン</button>
+			</div>
+			<div class="section">
+				<ul>
+					<!-- 下記のdataのfruits配列から値とインデックスを取得し、配列の要素分liタグを繰返し表示する。 -->
+					<li v-for="(val,i) in fruits">{{i}}. {{val}}</li>
+				</ul>
+				<ul>
+					<!-- 下記のdataのobjectオブジェクトから値とキーとインデックスを取得し、配列の要素分liタグを繰返し表示する。 -->
+					<li v-for="(val,k,i) in object">{{i}}. {{k}}: {{val}}</li>
+				</ul>
+				<ul>
+					<!-- templateタグでまとめる事も可能。 -->
+					<template v-for="val in fruits">
+						<li>{{val}}</li>
+						<hr>
+					</template>
+				</ul>
+				<ul>
+					<!-- 属性を持たせる場合、templateタグでは不可能な為、他のタグで行う。 -->
+					<div v-for="val in fruits" :key="val">
+						<li>{{val}}</li>
+						<input type="text">
+					</div>
+				</ul>
+				<!-- 下記のmethodsのremove関数を実行する。 -->
+				<button @click="remove">先頭を削除</button>
+				<ul>
+					<!-- 中身が1〜10のliタグを繰返し表示する。 -->
+					<li v-for="n in 10">{{n}}</li>
+				</ul>
+			</div>
+			<!-- v-ifと異なり、display:'none'の切替えで表示を制御。templateには適用できない。頻繁に何かの表示を制御する場合に使用する。 -->
+			<p v-show="ok">Show</p>
 		</div>
 		<script>
 			new Vue({
 				el:"#app",
 				data: {
 					ok: false,
-					ok_no: true,
 					maybeOk: true,
+					ok_no: true,
 					fruits: ['りんご', 'バナナ', 'ぶどう'],
 					object: {
 						firstName: '太郎',
@@ -66,10 +82,16 @@
 				},
 				methods: {
 					remove: function() {
+						// 上記のdataのfruits配列の先頭要素を削除する。
 						this.fruits.shift();
 					}
 				}
 			})
 		</script>
+		<style>
+		.section {
+			border: 1px solid #000;
+		}
+		</style>
 	</body>
 </html>
