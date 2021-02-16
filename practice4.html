@@ -7,31 +7,62 @@
 		<script src="js/vue.js"></script>
 	</head>
 	<body>
-		<div id="app1">
+		<div id="app1" class="section">
+			<!-- 下記のグローバルコンポーネントから、pタグで囲われたテキスト「ウクライナ」が表示される。 -->
+			<abc></abc>
+			<!-- 下記のvm1インスタンスのdataのmessageから、インスタンス外部から書き換えられた「インスタンス1というmessageを書き換え」が表示される。 -->
 			<p>{{message}}</p>
+			<!-- クリックする際、messageにボタンから変更を挿入し、vm1インスタンスのdataのmessageを変更する。 -->
 			<button @click="message = 'ボタンから変更'">変更</button>
-			<aaa></aaa>
-			<ccc></ccc>
+			<!-- 下記のローカルコンポーネントから、pタグで囲われた数字「15」とボタン「+1」が表示される。 -->
+			<def></def>
 		</div>
-		<div id="app2">
-			<bbb></bbb>
-			<bbb></bbb>
-			<bbb></bbb>
+		<div id="app2" class="section">
+			<!-- 下記のローカルコンポーネントから、pタグで囲われた数字「13」とボタン「+1」が表示される。 -->
+			<ghi></ghi>
+			<ghi></ghi>
+			<ghi></ghi>
+			<!-- 下記のvm2インスタンスのdataのmessageから、テキスト「インスタンス2」が表示される。 -->
 			<p>{{message}}</p>
+			<!-- 下記のmethodsのchangeMessage1関数を実行する。 -->
 			<button @click="changeMessage1">インスタンス1のmessageを変更</button>
+			<!-- クリックする際、messageに「ボタンから変更」を挿入し、vm2インスタンスのdataのmessageを変更する。 -->
 			<button @click="message = 'ボタンから変更'">変更</button>
 		</div>
-		<div id="app3">
+		<div id="app3" class="section">
+			<!-- 下記のcomputedのmyData関数を実行する。 -->
 			<p>{{myData}}</p>
 		</div>
-		<div id="app4"></div>
-		<div id="app5"></div>
-		<div id="app6">
+		<div id="app4" class="section"><div></div></div>
+		<div id="app5" class="section"><div></div></div>
+		<div id="app6" class="section">
 			<p>さようなら{{name}}さん</p>
+			<!-- クリックする際、nameに「太一」を挿入し、vm6インスタンスのdataのnameを変更する。 -->
 			<button @click="name = '太一'">名前変更</button>
+			<!-- 下記のmethodsのdestroy関数を実行する。 -->
 			<button @click="destroy">インスタンス破壊</button>
 		</div>
 		<script>
+			// グローバルコンポーネント
+			// 複数のインスタンスで共通して使用したい事がある場合は、componentが必要。
+			Vue.component('abc', {
+				template: '<p>ウクライナ</p>'
+			})
+			Vue.component('ghi', {
+				// component内でのdataは関数で記載しないといけない。
+				data: function() {
+					return {
+						number: 13
+					}
+				},
+				// 上記のdataから数字「13」と下記のmethodsからクリックする度に+1する処理をするボタンを表示する。
+				template: '<p>{{number}}　<button @click="increment">+1</button></p>',
+				methods: {
+					increment: function() {
+						this.number += 1;
+					}
+				}
+			})
 			// ローカルコンポーネント
 			var component = {
 				data: function() {
@@ -39,7 +70,8 @@
 						number: 15
 					}
 				},
-				template: '<p>{{number}}<button @click="increment">+1</button></p>',
+				// 上記のdataから数字「15」と下記のmethodsからクリックする度に+1する処理をするボタンを表示する。
+				template: '<p>{{number}}　<button @click="increment">+1</button></p>',
 				methods: {
 					increment: function() {
 						this.number += 1;
@@ -50,25 +82,7 @@
 				firstname: '山田',
 				lastname: '太郎'
 			}
-			// グローバルコンポーネント
-			// 複数のインスタンスで共通して使用したい事がある場合は、componentが必要。
-			Vue.component('aaa', {
-				template: '<p>ウクライナ</p>'
-			})
-			//component内でのdataは関数で記載しないといけない。
-			Vue.component('bbb', {
-				data: function() {
-					return {
-						number: 13
-					}
-				},
-				template: '<p>{{number}}<button @click="increment">+1</button></p>',
-				methods: {
-					increment: function() {
-						this.number += 1;
-					}
-				}
-			})
+			// インスタンス
 			var vm1 = new Vue({
 				el:"#app1",
 				data: {
@@ -77,17 +91,20 @@
 				},
 				computed: {
 					myData: function (){
-						// 自分自身のインスタンスを取得
+						// 自分自身のインスタンスを取得する。
 						return this.$data;
 					}
 				},
 				components: {
-					'ccc': component // ローカルコンポーネント グローバルコンポーネントより使用される。
+					 // 上記のローカルコンポーネントを使用する。
+					'def': component
 				}
 			})
+			// 上記vm1インスタンスのdataのmessageを書き換え。ただし、プロパティの追加はできない。
+			vm1.message = 'インスタンス1というmessageを書き換え'
+			// 上記vm1インスタンスのdataの中身をコンソールに表示する。
 			console.log(vm1.$data)
-			// 外側から変更可能。ただし、プロパティの追加はできない。
-			vm1.message = '書き換え'
+			// インスタンス
 			var vm2 = new Vue({
 				el:"#app2",
 				data: {
@@ -95,24 +112,23 @@
 				},
 				methods: {
 					changeMessage1: function() {
-						// 別のインスタンスのプロパティを変更。
+						// 上記vm1インスタンスのdataのmessageを変更する。
 						vm1.message = 'インスタンス2から変えました'
 					}
 				}
 			})
+			// インスタンス(el無し)
 			var vm3 = new Vue({
 				data: data,
 				computed: {
 					myData: function (){
-						// 自分自身のインスタンスを取得
+						// 自分自身のインスタンスを取得する。
 						return this.$data;
 					}
 				}
 			})
-			// elの代わり
-			// $mountは作成した仮装DOMを実際のDOMに反映する。
+			// $mountは作成した仮装DOM(vm3インスタンス)を実際のDOM(#app3)に反映する。
 			vm3.$mount('#app3')
-
 			/*
 			new Vue({
 				el: 'app4'
@@ -122,13 +138,14 @@
 				template: '<p>こんにちは、{{name}}さん。</p>'
 			})
 			*/
-			//下記は上記と同意。
+			//下記は上記と同じ。
 			new Vue({
 				data: {
 					name: '安藤'
 				},
 				template: '<p>こんにちは、{{name}}さん。</p>'
-			}).$mount('#app4')
+			}).$mount('#app4 div')
+
 			new Vue({
 				data: {
 					name: '伊藤'
@@ -138,7 +155,8 @@
 					// 仮装DOMとはDOM要素を模したJavaScriptのオブジェクトの事。
 					return h('h1', 'こんにちは'+this.name);
 				}
-			}).$mount('#app5')
+			}).$mount('#app5 div')
+
 			new Vue({
 				el: '#app6',
 				data: {
@@ -170,11 +188,16 @@
 				},
 				methods: {
 					destroy: function() {
-						// Vueインスタンスの機能を破壊する。これ以降にクリック動作等は効かない。
+						// Vueインスタンスの機能を破壊する。これ以降vm6インスタンスのクリック動作等が効かない。
 						this.$destroy()
 					}
 				}
 			})
 		</script>
+		<style>
+		.section {
+			border: 1px solid #000;
+		}
+		</style>
 	</body>
 </html>
