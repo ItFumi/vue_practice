@@ -1,97 +1,104 @@
 <template>
+  <!-- templateタグの中身はルート要素のみ配置する。 -->
   <div>
-    <!-- 大文字で始まるパスカルケースで記載。like-headerというケバブケースでも記載可。 -->
-    <!--
-    <LikeHeader headerText="トータルのいいね数">
-      <p>トータルのいいね数</p>
+    <!-- 大文字で始まるパスカルケースで記載。 -->
+    <div class="section">
+      <Section6_1></Section6_1>
+      <Section6></Section6>
+    </div>
+    <div class="section">
       <p>{{number}}</p>
-    </LikeHeader>
-    -->
-
-    <!-- 子コンポーネントのLikeHeader.vueのslotタグより、name属性にこのv-slot属性に指定された属性値を指定する事で表示される。templateタグ以外は使用不可。 -->
-    <!-- 「v-slot:title="slotProps"」で子コンポーネントのslotタグのデータを取得できる。 -->
-    <!--
-    <LikeHeader>
-      <h3>子コンポーネントの空のslotタグに</h3>
-      <template v-slot:title="slotProps">
-        <p>トータルのいいね数</p>
-        <p>{{ slotProps }}</p>
-      </template>
-      <p>記載される内容。</p>
-      <template v-slot:number>
-        <p>{{number}}</p>
-      </template>
-    </LikeHeader>
-    -->
-
-    <LikeHeader>
-      <!-- 「v-slot:」は「#」に置き換え可能。 -->
-      <template #[title]></template>
-    </LikeHeader>
-
-    <!-- コンポーネント内にtemplateタグが1つのみの場合、下記の様にコンポーネントにv-slotを記載できる。 -->
-    <!-- 下記、省略形。 -->
-    <!-- v-slot:default="slotProps"を省略。 -->
-    <!--
-    <LikeHeader v-slot="slotProps">
-      <p>{{slotProps}}</p>
-    </LikeHeader>
-    -->
-
-    <!-- HTML内では属性値をケバブケースで記載する事。 -->
-    <!-- LikeNumber.vueのincrement()で発火。 -->
-    <!--
-    <LikeNumber :total-number="number" @my-click="number = $event"></LikeNumber>
-    -->
-
-    <!-- @my-click内は関数でも可能。 -->
-    <!--
-    <LikeNumber :total-number="number" @my-click="incrementNumber"></LikeNumber>
-    <LikeNumber :total-number="number" test-props="test"></LikeNumber>
-    -->
-
-    <button @click="currentComponent = 'Home'">Home</button>
-    <button @click="currentComponent = 'About'">About</button>
-    <keep-alive>
-      <component :is="currentComponent"></component>
-    </keep-alive>
-    <!-- keep-aliveタグによって、タブの切替え処理等で再描画する事がなくなる。-->
-    <!-- 上記のcomponentタグは、下記2つと同じ処理を行う。 -->
-    <!--
-    <Home v-if="currentComponent === 'Home'"></Home>
-    <About v-if="currentComponent === 'About'"></About>
-    -->
+      <!-- :属性名を挿入する事で、Section7.vueにnumberの値を送る。 -->
+      <!-- ケバブケースで記載する事を推奨。totalNumberといったキャメルケースでの記載も可能。 -->
+      <!-- 子コンポーネントのSection7.vueのincrement関数内にある$emitの第一引数名のイベントが実行される。 -->
+      <Section7 :total-number="number" @my-click="number = $event"></Section7>
+      <Section7 :total-number="number" @my-click="number = $event"></Section7>
+      <!-- 下記、子コンポーネントのSection7.vueのincrement関数の$emit実行後、下記methodsのincrementNumber関数を実行する。 -->
+      <!-- <Section7 :total-number="number" @my-click="incrementNumber"></Section7> -->
+      <!-- 下記、複数のデータ送信用。Section7.vueにnumberとtestの値を送る。 -->
+      <!-- <Section7 :total-number="number" :test-props="test"></Section7> -->
+    </div>
+    <div class="section">
+      <!-- Section8.vueへテキスト「トータルのいいね数」を送る。 -->
+      <Section8 headerText="トータルのいいね数"></Section8>
+      <!-- Section8.vueへhtmlタグも含めたテキスト「トータルのいいね数」を送る。 -->
+      <!-- 下記、templateタグで囲っていない内容のものは、最終的に自動生成されたv-solot:default属性のあるtemplateタグにまとめられる。 -->
+      <Section8>
+        <h4>トータルのいいね数</h4>
+        <p>あ</p>
+        <h3>{{number}}</h3>
+        <!-- Section8.vueで同名のname属性を持つslot内にテキスト「こんにちは」を送る。 -->
+        <!-- Section8.vueの同名のname属性に、v-bindで送られたデータを表示する。 -->
+        <template v-slot:title="aaa">
+          <h2>こんにちは</h2>
+          <h2>{{aaa}}</h2>
+        </template>
+        <p>い</p>
+        <p>う</p>
+        <!-- Section8.vueで同名のname属性を持つslot内にnumberの値を送る。 -->
+        <template v-slot:number>
+          <p>{{number}}</p>
+        </template>
+        <p>え</p>
+        <!-- 下記dataのtitleをv-slot[title]に挿入し、Section8.vueへhtmlタグも含めたテキストを送る。 -->
+        <template v-slot:[title]>
+            <p>犬</p>
+            <p>猫</p>
+        </template>
+      </Section8>
+      <!-- タグ内に何も挿入していない為、Section8_1.vueのslotタグ内のテキストを表示する。 -->
+      <Section8_1></Section8_1>
+      <!-- Section8_2.vueからv-bindで送られたデータを表示する。Section8_2コンポーネントタグ内にtemplateタグが1つだけの場合、templateタグ省略できる。 -->
+      <!-- v-slot:default="movie_name"でも可能。 -->
+      <Section8_2 v-slot="movie_name">
+        <h2>{{movie_name}}</h2>
+      </Section8_2>
+      <!-- 下記dataのcurrentComponentの値を切替える事でSection8_3とSection8_4の内容の表示を制御する。 -->
+      <button @click="currentComponent = 'Section8_3'">Section8_3</button>
+      <button @click="currentComponent = 'Section8_4'">Section8_4</button>
+      <Section8_3 v-if="currentComponent === 'Section8_3'"></Section8_3>
+      <Section8_4 v-if="currentComponent === 'Section8_4'"></Section8_4>
+      <!-- 下記componentタグは、上記2つのコンポーネントタグと同じ意味。 -->
+      <!-- keep-aliveタグによって、タブの切替え処理等で再描画する事がなくなる。 -->
+      <keep-alive>
+        <component :is="currentComponent"></component>
+      </keep-alive>
+    </div>
   </div>
 </template>
 <script>
-// ローカル登録
-import LikeHeader from "./components/LikeHeader.vue"
-import Home from "./components/Home.vue"
-import About from "./components/About.vue"
-
+// コンポーネントをローカル登録する。App.vueのみ使用可能。
+import Section6_1 from './components/Section6_1.vue'
+import Section8_1 from './components/Section8_1.vue'
+import Section8_2 from './components/Section8_2.vue'
+import Section8_3 from './components/Section8_3.vue'
+import Section8_4 from './components/Section8_4.vue'
 export default {
   data() {
     return {
       number: 10,
-      title: "title",
-      currentComponent: 'Home'
+      title: "animal",
+      currentComponent: 'Section8_3'
     }
   },
   components: {
-    LikeHeader: LikeHeader,
-    Home: Home,
-    About: About
+    Section6_1,
+    Section8_1,
+    Section8_2,
+    Section8_3,
+    Section8_4
   },
   methods: {
-    incrementNumber(val) {
-      this.number = val;
+    // 子コンポーネントのSection7.vueのincrement関数内にある$emitの第二引数のデータがvalueに挿入される。
+    incrementNumber(value) {
+      this.number = value;
     }
   }
 }
 </script>
-/* scopedを入れる事により他のvueファイルへのスタイル適用を防ぐ。 */
+/* scopedを指定する事によって、このvueファイルのみスタイルを適用する。 */
 <style scoped>
-  div {
-    border: 1px solid red;
-  }
+.section {
+  border: 1px solid #000;
+}
 </style>
