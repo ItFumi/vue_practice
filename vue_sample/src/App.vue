@@ -122,6 +122,9 @@
         {{eventData.location}}
       </p>
     </div>
+    <div class="section">
+      <Section10></Section10>
+    </div>
   </div>
 </template>
 <script>
@@ -134,6 +137,7 @@ import Section8_2 from './components/Section8_2.vue'
 import Section8_3 from './components/Section8_3.vue'
 import Section8_4 from './components/Section8_4.vue'
 import Section9 from './components/Section9.vue'
+import Section10 from './components/Section10.vue'
 export default {
   data() {
     return {
@@ -162,7 +166,8 @@ export default {
     Section8_2,
     Section8_3,
     Section8_4,
-    Section9
+    Section9,
+    Section10
   },
   methods: {
     // 子コンポーネントのSection7.vueのincrement関数内にある$emitの第二引数のデータがvalueに挿入される。
