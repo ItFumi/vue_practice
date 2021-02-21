@@ -35,6 +35,16 @@ Vue.directive("border", {
   unbind() {}
 })
 */
+// 下記はグローバル宣言。Section11.vueから呼出される処理。引数で受取ったテキストを大文字にする。
+Vue.filter("upperCase", function(value) {
+  return value.toUpperCase()
+})
+// 全てのVueインスタンスに適用される。
+Vue.mixin({
+  created() {
+    console.log("Global Mixin")
+  }
+})
 
 new Vue({
   render: h => h(App),
