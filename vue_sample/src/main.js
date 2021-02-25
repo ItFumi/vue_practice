@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import Section6 from './components/Section6.vue'
+import 'animate.css'
 
 Vue.config.productionTip = false
 // コンポーネントをグローバル登録する。

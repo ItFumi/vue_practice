@@ -129,6 +129,9 @@
       <Section11></Section11>
       <Section11_1></Section11_1>
     </div>
+    <div class="section">
+      <Section12></Section12>
+    </div>
   </div>
 </template>
 <script>
@@ -144,6 +147,7 @@ import Section9 from './components/Section9.vue'
 import Section10 from './components/Section10.vue'
 import Section11 from './components/Section11.vue'
 import Section11_1 from './components/Section11_1.vue'
+import Section12 from './components/Section12.vue'
 export default {
   data() {
     return {
@@ -175,7 +179,8 @@ export default {
     Section9,
     Section10,
     Section11,
-    Section11_1
+    Section11_1,
+    Section12
   },
   methods: {
     // 子コンポーネントのSection7.vueのincrement関数内にある$emitの第二引数のデータがvalueに挿入される。
