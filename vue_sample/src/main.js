@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import Section6 from './components/Section6.vue'
 import 'animate.css'
+import router from './router'
 
 Vue.config.productionTip = false
 // コンポーネントをグローバル登録する。
@@ -48,5 +49,6 @@ Vue.mixin({
 })
 
 new Vue({
+  router: router,
   render: h => h(App),
 }).$mount('#app')

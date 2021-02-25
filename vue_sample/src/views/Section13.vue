@@ -1,5 +1,5 @@
 <template>
   <div>
-    <router-view></router-view>
+    <h4>Home</h4>
   </div>
 </template>
