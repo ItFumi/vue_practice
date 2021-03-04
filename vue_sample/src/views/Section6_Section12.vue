@@ -191,7 +191,7 @@ export default {
   }
 }
 </script>
-/* scopedを指定する事によって、このvueファイルのみスタイルを適用する。 */
+<!-- scopedを指定する事によって、このvueファイルのみスタイルを適用する。 -->
 <style scoped>
 .section {
   border: 1px solid #000;

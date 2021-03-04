@@ -5,6 +5,17 @@ import 'animate.css'
 import router from './router'
 
 Vue.config.productionTip = false
+
+// 全てのページの前に何か処理をしたい場合に記載する。
+// 引数のtoとfromは、現在の$routerの状態を表す。
+router.beforeEach(function(to, from, next){
+  // 遷移先が/section13_5の場合、/section13に強制遷移される。
+  if(to.path === "/section13_5"){
+    next("/section13")
+  }
+  next()
+})
+
 // コンポーネントをグローバル登録する。
 Vue.component("Section6",Section6)
 // Sevtion10.vueで使用されているカスタムディレクティブ(v-border)を登録する。基本的にbindとupdateを使用する。

@@ -45,7 +45,7 @@
 			<components :is="myComponents"></components>
 		</transition>
 		<button @click="add">追加</button>
-		<!-- transition-groupタグはデフォルトではspanタグに置き換えられるが、tag属性で任意のタグ -->
+		<!-- transition-groupタグはデフォルトではspanタグに置き換えられるが、tag属性で任意のタグに変更できる。 -->
 		<transition-group name="fade" tag="ul">
 			<li v-for="(number, index) in numbers" :key="number" @click="remove(index)" style="cursor:pointer;">{{number}}</li>
 		</transition-group>
